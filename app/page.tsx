@@ -30,13 +30,22 @@ export default function TarotPage() {
 const [reading, setReading] = useState("");
 const [name, setName] = useState("");
 const [question, setQuestion] = useState("");
+const [loading, setLoading] = useState(false);
+const messages = [
+  "🔮 Reading your cards...",
+  "✨ Interpreting hidden symbols...",
+  "🌙 Consulting ancient archetypes...",
+  "🃏 Revealing your path...",
+];
   async function drawCards() {
+      setLoading(true);
 const shuffled = [...cards].sort(() => Math.random() - 0.5);
 
 const selectedCards = shuffled.slice(0, 3);
 
 setDrawnCards(selectedCards);
 
+await new Promise(resolve => setTimeout(resolve, 50));
 const res = await fetch("/api/tarot", {
 method: "POST",
 headers: {
@@ -52,6 +61,7 @@ body: JSON.stringify({
 const data = await res.json();
 
 setReading(data.reading);
+setLoading(false);
 }
 
 
@@ -79,11 +89,12 @@ setReading(data.reading);
   className="border w-full p-3 mb-4"
 />
       <button
-        onClick={drawCards}
-        className="bg-black text-white px-6 py-3"
-      >
-        Draw Cards
-      </button>
+  onClick={drawCards}
+  disabled={loading}
+  className="bg-black text-white px-6 py-3"
+>
+  {loading ? "🔮 Reading..." : "Draw Cards"}
+</button>
 
       {drawnCards.length > 0 && (
         <div className="mt-8">
@@ -96,6 +107,15 @@ setReading(data.reading);
           ))}
         </div>
       )}
+      {loading && (
+  <div className="mt-8 text-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+
+    <p className="mt-4 text-lg font-semibold text-purple-700">
+      🔮 Reading your cards...
+    </p>
+  </div>
+)}
       {reading && (
   <div className="mt-8">
     <h2 className="text-2xl font-bold mb-4">
@@ -121,6 +141,8 @@ setReading(data.reading);
     Unlock Full Reading - $5
   </button>
 </div>
+
+
     </main>
   );
 }
