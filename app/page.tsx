@@ -2,102 +2,125 @@
 
 import { useState } from "react";
 
-const cats = [
-  {
-    name: "Orange Cat",
-    rarity: "Common",
-    reward: 1,
-  },
-  {
-    name: "Black Cat",
-    rarity: "Rare",
-    reward: 3,
-  },
-  {
-    name: "Mirroro™",
-    rarity: "Legendary",
-    reward: 10,
-  },
+const cards = [
+  "The Fool",
+  "The Magician",
+  "The High Priestess",
+  "The Empress",
+  "The Emperor",
+  "The Lovers",
+  "The Chariot",
+  "Strength",
+  "The Hermit",
+  "Wheel of Fortune",
+  "Justice",
+  "Death",
+  "Temperance",
+  "The Devil",
+  "The Tower",
+  "The Star",
+  "The Moon",
+  "The Sun",
+  "Judgement",
+  "The World",
 ];
 
-export default function Home() {
-  const [coin, setCoin] = useState(0);
-  const [count, setCount] = useState(0);
+export default function TarotPage() {
+  const [drawnCards, setDrawnCards] = useState<string[]>([]);
+const [reading, setReading] = useState("");
+const [name, setName] = useState("");
+const [question, setQuestion] = useState("");
+  async function drawCards() {
+const shuffled = [...cards].sort(() => Math.random() - 0.5);
 
-  const [currentCat, setCurrentCat] = useState("???");
-  const [rarity, setRarity] = useState("???");
-  const [collection, setCollection] = useState<string[]>([]);
+const selectedCards = shuffled.slice(0, 3);
 
-  function openCrate() {
-    const randomCat =
-      cats[Math.floor(Math.random() * cats.length)];
+setDrawnCards(selectedCards);
 
-    setCurrentCat(randomCat.name);
-    setRarity(randomCat.rarity);
+const res = await fetch("/api/tarot", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+},
+body: JSON.stringify({
+  name,
+  question,
+  cards: selectedCards,
+}),
+});
 
-    setCount(count + 1);
-    setCoin(coin + randomCat.reward);
-    if (!collection.includes(randomCat.name)) {
-  setCollection([...collection, randomCat.name]);
+const data = await res.json();
+
+setReading(data.reading);
 }
-  }
+
 
   return (
-    <main className="min-h-screen bg-stone-100 flex items-center justify-center p-8">
-      <div className="bg-white shadow-xl rounded-3xl p-10 max-w-md w-full text-center">
+    <main className="max-w-2xl mx-auto p-8">
+      <h1 className="text-4xl font-bold mb-2">
+        Tarot Reading
+      </h1>
 
-        <h1 className="text-5xl font-bold mb-3">
-          CATalog™
-        </h1>
+      <p className="mb-6">
+        Draw three cards and receive a personalized interpretation.
+      </p>
 
-        <p className="text-gray-600 mb-8">
-          Collect • Discover • Love
-        </p>
+      <input
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  placeholder="Your Name"
+  className="border w-full p-3 mb-4"
+/>
 
-        <div className="text-8xl mb-4">
-          🐈‍⬛
+<textarea
+  value={question}
+  onChange={(e) => setQuestion(e.target.value)}
+  placeholder="Your Question"
+  className="border w-full p-3 mb-4"
+/>
+      <button
+        onClick={drawCards}
+        className="bg-black text-white px-6 py-3"
+      >
+        Draw Cards
+      </button>
+
+      {drawnCards.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">
+            Your Cards
+          </h2>
+
+          {drawnCards.map((card) => (
+            <div key={card}>{card}</div>
+          ))}
         </div>
+      )}
+      {reading && (
+  <div className="mt-8">
+    <h2 className="text-2xl font-bold mb-4">
+      Tarot Reading
+    </h2>
 
-        <h2 className="text-3xl font-bold mb-2">
-          {currentCat}
-        </h2>
-
-        <p className="text-purple-600 font-bold mb-6">
-          {rarity}
-        </p>
-
-        <div className="space-y-2 mb-8">
-          <p>🪙 Foin Coin: {coin}</p>
-          <p>🐾 Cats Collected: {count}</p>
-        </div>
-
-        <button
-          onClick={openCrate}
-          className="bg-black text-white px-6 py-3 rounded-xl hover:scale-105 transition"
-        >
-          Open Crate
-          <div className="mt-8 text-left">
-  <h3 className="font-bold mb-3">
-    Your Collection
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 whitespace-pre-wrap">
+      {reading}
+    </div>
+  </div>
+)}
+<div className="mt-8 bg-purple-50 border border-purple-200 rounded-xl p-6">
+  <h3 className="text-xl font-bold mb-2">
+    ✨ Unlock Full Reading
   </h3>
 
-  {collection.length === 0 ? (
-    <p className="text-gray-500">
-      No cats yet...
-    </p>
-  ) : (
-    <ul>
-      {collection.map((cat) => (
-        <li key={cat}>
-          🐾 {cat}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-        </button>
+  <p className="mb-4">
+    Get a detailed tarot report with deeper insights into love,
+    career, hidden influences, future possibilities, and practical advice.
+  </p>
 
-      </div>
+  <button className="bg-purple-600 text-white px-6 py-3 rounded-lg font-bold">
+    Unlock Full Reading - $5
+  </button>
+</div>
     </main>
   );
 }
