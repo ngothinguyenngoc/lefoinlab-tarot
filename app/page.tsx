@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CardDisplay from "@/components/Carddisplay";
 
 const cards = [
   "The Fool",
@@ -96,17 +97,7 @@ setLoading(false);
   {loading ? "🔮 Reading..." : "Draw Cards"}
 </button>
 
-      {drawnCards.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">
-            Your Cards
-          </h2>
-
-          {drawnCards.map((card) => (
-            <div key={card}>{card}</div>
-          ))}
-        </div>
-      )}
+      <CardDisplay cards={drawnCards} />
       {loading && (
   <div className="mt-8 text-center">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
