@@ -10,7 +10,7 @@ function getImage(name: string) {
       .toLowerCase()
       .replace(/ /g, "-")
       .replace(/'/g, "") +
-    ".jpg"
+    ".png"
   );
 }
 
