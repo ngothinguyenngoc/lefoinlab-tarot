@@ -5,7 +5,7 @@ type Props = {
 
 function getImage(name: string) {
   return (
-    "/cards/" +
+    "/cards/card-" +
     name
       .toLowerCase()
       .replace(/ /g, "-")
