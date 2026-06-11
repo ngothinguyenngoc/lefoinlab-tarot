@@ -3,6 +3,7 @@ import TarotForm from "@/components/TarotForm";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useState } from "react";
 import CardDisplay from "@/components/CardDisplay";
+import ReadingBox from "@/components/ReadingBox";
 
 const cards = [
   "The Fool",
@@ -88,17 +89,9 @@ setLoading(false);
 
       <CardDisplay cards={drawnCards} />
       {loading && <LoadingSpinner />}
-      {reading && (
-  <div className="mt-8">
-    <h2 className="text-2xl font-bold mb-4">
-      Tarot Reading
-    </h2>
-
-    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200 whitespace-pre-wrap">
-      {reading}
-    </div>
-  </div>
-)}
+      <ReadingBox
+    reading={reading}
+/>
 <div className="mt-8 bg-purple-50 border border-purple-200 rounded-xl p-6">
   <h3 className="text-xl font-bold mb-2">
     ✨ Unlock Full Reading
