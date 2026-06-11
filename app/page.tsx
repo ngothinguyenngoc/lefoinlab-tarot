@@ -1,7 +1,8 @@
 "use client";
-
+import TarotForm from "@/components/TarotForm";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { useState } from "react";
-import CardDisplay from "@/components/Carddisplay";
+import CardDisplay from "@/components/CardDisplay";
 
 const cards = [
   "The Fool",
@@ -76,37 +77,17 @@ setLoading(false);
         Draw three cards and receive a personalized interpretation.
       </p>
 
-      <input
-  value={name}
-  onChange={(e) => setName(e.target.value)}
-  placeholder="Your Name"
-  className="border w-full p-3 mb-4"
+      <TarotForm
+  name={name}
+  question={question}
+  loading={loading}
+  setName={setName}
+  setQuestion={setQuestion}
+  onDraw={drawCards}
 />
-
-<textarea
-  value={question}
-  onChange={(e) => setQuestion(e.target.value)}
-  placeholder="Your Question"
-  className="border w-full p-3 mb-4"
-/>
-      <button
-  onClick={drawCards}
-  disabled={loading}
-  className="bg-black text-white px-6 py-3"
->
-  {loading ? "🔮 Reading..." : "Draw Cards"}
-</button>
 
       <CardDisplay cards={drawnCards} />
-      {loading && (
-  <div className="mt-8 text-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-
-    <p className="mt-4 text-lg font-semibold text-purple-700">
-      🔮 Reading your cards...
-    </p>
-  </div>
-)}
+      {loading && <LoadingSpinner />}
       {reading && (
   <div className="mt-8">
     <h2 className="text-2xl font-bold mb-4">
