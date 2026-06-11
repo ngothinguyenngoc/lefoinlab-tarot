@@ -18,33 +18,52 @@ export default function TarotCard({ name }: Props) {
   return (
     <div
       className="
-      bg-white
-      rounded-2xl
-      shadow-xl
+      group
+      rounded-3xl
       overflow-hidden
+      bg-white
+      shadow-lg
       border
-      hover:scale-105
+      border-gray-200
+      hover:-translate-y-2
       hover:shadow-2xl
       transition-all
       duration-300
-      cursor-pointer
       "
     >
-      <img
-        src={getImage(name)}
-        alt={name}
-        className="w-full aspect-[2/3] object-cover"
-      />
+      <div className="bg-gray-100">
 
-      <div className="p-4">
+        <img
+          src={getImage(name)}
+          alt={name}
+          className="
+          w-full
+          aspect-[2/3]
+          object-cover
+          group-hover:scale-105
+          transition-all
+          duration-300
+          "
+        />
 
-        <h3 className="font-bold text-lg text-center">
+      </div>
+
+      <div className="p-5">
+
+        <h3 className="text-xl font-bold text-center">
 
           {name}
 
         </h3>
 
+        <p className="text-gray-500 text-center mt-2 text-sm">
+
+          Click to reveal deeper meaning
+
+        </p>
+
       </div>
+
     </div>
   );
 }
