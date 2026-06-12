@@ -21,7 +21,7 @@ export default function ReadingBox({ reading }: Props) {
 
         <h2 className="text-3xl font-bold mb-6">
 
-          🔮 AI Tarot Reading
+          🔮 Le Foin ®  Tarot Reading
 
         </h2>
 
